@@ -4,8 +4,9 @@ import {initalItem} from "../Data/data";
 import Files from './Files';
 import Folder from './Folder';
 import NavBar from './NavBar';
-import Search from './Search';
 import ModalComp from './ModalComp';
+import { height } from "@mui/system";
+import SearchBar from "./Search";
 
 function MainComponent() {
   const [Item, setItem] = useState(initalItem);
@@ -24,8 +25,8 @@ function MainComponent() {
       type: 0,
       name: "My Documents",
       ID: 0,
-      parent: -1
-    }
+      parent: -1,
+    },
   ]);
 
   const files = Item.filter((item) => {
@@ -75,18 +76,7 @@ function MainComponent() {
     if (text.split(".")[1].toLowerCase() === "pdf") return 3;
   };
 
-  const add = () => {
-    setItem([
-      ...Item,
-      {
-        name: searchValue,
-        type: 0,
-        parent: current.ID,
-        ID: Item.length + 1
-      }
-    ]);
-    setSearchValue("");
-  }
+
   const addObj = (type) => {
     // change searchValue Variable
     let localtype = "";
@@ -98,10 +88,11 @@ function MainComponent() {
         name: value,
         type: localtype,
         parent: current.ID,
-        ID: Item.length + 1
-      }
+        ID: Item.length + 1,
+      },
     ]);
-    setSearchValue("");
+    setValue("");
+    setOpen(false);
   };
 
   const deleteItem = (ID) => {
@@ -114,8 +105,8 @@ function MainComponent() {
         type: item.type,
         parent: item.parent,
         name: `${item.name}(1)`,
-        ID: Item.length + 1
-      }
+        ID: Item.length + 1,
+      },
     ]);
   };
   const rename = (value, text) => {
@@ -146,14 +137,14 @@ function MainComponent() {
             <div style={{verticalAlign:"center",marginTop:"1em"}}>
               <Button variant="outlined"  onClick={() => handleOpen("folder")} style={{marginRight:"1rem",borderColor:"black",color:"black",padding:"0.5rem" }}><Typography variant="body2">New folder</Typography></Button>
               <Button variant="contained" onClick={() => handleOpen("file")} style={{backgroundColor:"#008392"}}>New file</Button>
-            </div>
-
+    
+   
           </div>
+        </div>
 
+        <SearchBar handleSearch={handleSearch} searchValue={searchValue} />
 
-          <Search handleSearch={handleSearch} searchValue={searchValue}/>
-
-          <Folder handleFolderClick={handleFolderClick} folder={folder}/>
+        <Folder handleFolderClick={handleFolderClick} folder={folder} />
 
           <Files files={files} />
           <ModalComp open={open} handleClose={handleClose} type={type} handleChange ={handleChange} value ={value} addObj={addObj}/>

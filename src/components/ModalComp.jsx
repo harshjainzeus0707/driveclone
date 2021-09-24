@@ -51,8 +51,8 @@ function ModalComp({open,handleClose,type,value,handleChange,task,addObj}) {
                 <Typography id="transition-modal-title" variant="h6" component="h2" style={{marginBottom:"0.6rem" }} >
                   Name of the {type}
                 </Typography>
-                <TextField  label={label} variant="outlined" style={{padding:"0px",margintop:"1rem", borderColor:"grey"}} fullWidth onChange={(e)=>{handleChange(e)}} value={value}/>
-                <div>
+                <TextField  label={label} variant="outlined" sx={{padding:"0px",margintop:"1rem", borderColor:"grey"}} fullWidth onChange={(e)=>{handleChange(e)}} value={value}/>
+                <div style={{marginTop:"2rem",display:"flex", justifyContent:"flex-end"}}>
                 <Button variant="outlined"  onClick={() => handleClose()} style={{marginRight:"1rem",borderColor:"black",color:"black",padding:"0.5rem" }}><Typography variant="body2">Cancel</Typography></Button>
                 <Button variant="contained" onClick={() => addObj(type)} style={{backgroundColor:"#008392"}}>Create {type}</Button>
                 </div>
