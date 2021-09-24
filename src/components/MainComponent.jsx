@@ -1,14 +1,17 @@
 import { Button, Container, Typography } from '@mui/material';
-import { height } from '@mui/system';
 import React,{useEffect,useState} from 'react';
 import {initalItem} from "../Data/data";
 import Files from './Files';
 import Folder from './Folder';
 import NavBar from './NavBar';
 import Search from './Search';
+import ModalComp from './ModalComp';
 
 function MainComponent() {
   const [Item, setItem] = useState(initalItem);
+  const [open, setOpen] = React.useState(false);
+  const [type,settype] = useState("");
+  const [value,setValue] = useState("");
   // for folder type = 1, file = 0
   const [current, setCurrent] = useState({
     type: 0,
@@ -61,6 +64,10 @@ function MainComponent() {
   const handleSearch = (text) => {
     setSearchValue(text.toLowerCase());
   };
+
+  const handleChange = (e) =>{
+     setValue(e.target.value)
+  }
   const getType = (text) => {
     if (text.split(".").length === 1) return 2;
     if (text.split(".")[1].toLowerCase() === "ppt") return 1;
@@ -80,13 +87,16 @@ function MainComponent() {
     ]);
     setSearchValue("");
   }
-  const addText = () => {
+  const addObj = (type) => {
     // change searchValue Variable
+    let localtype = "";
+    if(type == "folder") {localtype = 0 ;}
+    else {localtype = getType(value);}
     setItem([
       ...Item,
       {
-        name: searchValue,
-        type: getType(searchValue),
+        name: value,
+        type: localtype,
         parent: current.ID,
         ID: Item.length + 1
       }
@@ -115,6 +125,12 @@ function MainComponent() {
     setItem(newvalue);
   };
 
+  const handleOpen = (type) => {
+    settype(type);
+    setOpen(true);
+  }
+  const handleClose = () => setOpen(false);
+
   return (
     <div style={{background:"#f0f0f0",paddingBottom:"3rem"}}>
       
@@ -128,8 +144,8 @@ function MainComponent() {
               <div style={{marginTop:"0.5rem"}}><Typography variant="body1" color="textSecondary"> {folder.length} folder, {files.length} files</Typography></div>
             </div>
             <div style={{verticalAlign:"center",marginTop:"1em"}}>
-              <Button variant="outlined"  onClick={() => add()} style={{marginRight:"1rem",borderColor:"black",color:"black",padding:"0.5rem" }}><Typography variant="body2">New folder</Typography></Button>
-              <Button variant="contained" onClick={() => addText()} style={{backgroundColor:"#008392"}}>New file</Button>
+              <Button variant="outlined"  onClick={() => handleOpen("folder")} style={{marginRight:"1rem",borderColor:"black",color:"black",padding:"0.5rem" }}><Typography variant="body2">New folder</Typography></Button>
+              <Button variant="contained" onClick={() => handleOpen("file")} style={{backgroundColor:"#008392"}}>New file</Button>
             </div>
 
           </div>
@@ -140,6 +156,7 @@ function MainComponent() {
           <Folder handleFolderClick={handleFolderClick} folder={folder}/>
 
           <Files files={files} />
+          <ModalComp open={open} handleClose={handleClose} type={type} handleChange ={handleChange} value ={value} addObj={addObj}/>
       </Container>
     </div>
   );
