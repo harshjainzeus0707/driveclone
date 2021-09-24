@@ -11,8 +11,8 @@ import SearchBar from "./Search";
 function MainComponent() {
   const [Item, setItem] = useState(initalItem);
   const [open, setOpen] = React.useState(false);
-  const [type,settype] = useState("");
-  const [value,setValue] = useState("");
+  const [type, settype] = useState("");
+  const [value, setValue] = useState("");
   // for folder type = 1, file = 0
   const [current, setCurrent] = useState({
     type: 0,
@@ -70,9 +70,9 @@ function MainComponent() {
     setSearchValue(text.toLowerCase());
   };
 
-  const handleChange = (e) =>{
-     setValue(e.target.value)
-  }
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
   const getType = (text) => {
     if (text.split(".").length === 1) return 2;
     if (text.split(".")[1].toLowerCase() === "ppt") return 1;
@@ -80,12 +80,14 @@ function MainComponent() {
     if (text.split(".")[1].toLowerCase() === "pdf") return 3;
   };
 
-
   const addObj = (type) => {
     // change searchValue Variable
     let localtype = "";
-    if(type == "folder") {localtype = 0 ;}
-    else {localtype = getType(value);}
+    if (type == "folder") {
+      localtype = 0;
+    } else {
+      localtype = getType(value);
+    }
     setItem([
       ...Item,
       {
@@ -100,9 +102,11 @@ function MainComponent() {
   };
 
   const deleteItem = (ID) => {
+    console.log(ID);
     setItem(Item.filter((item) => item.ID !== ID));
   };
   const duplicate = (item) => {
+    console.log(item);
     setItem([
       ...Item,
       {
@@ -123,7 +127,7 @@ function MainComponent() {
   const handleOpen = (type) => {
     settype(type);
     setOpen(true);
-  }
+  };
   const handleClose = () => setOpen(false);
   const isActive = useMediaQuery("(max-width: 450px)");
 
@@ -138,12 +142,28 @@ function MainComponent() {
             <div style={{flexGrow:"11"}}>
               <Typography variant="h5" style={{fontWeight:"bold"}} > {bc[bc.length-1].name} </Typography>
               <div style={{marginTop:"0.5rem"}}><Typography variant="body1" color="textSecondary"> {folder.length} folder, {files.length} files</Typography></div>
-            </div>
-            <div style={{verticalAlign:"center",marginTop:"1em"}}>
-              <Button variant="outlined"  onClick={() => handleOpen("folder")} style={{marginRight:"1rem",borderColor:"black",color:"black",padding:"0.5rem" }}><Typography variant="body2">New folder</Typography></Button>
-              <Button variant="contained" onClick={() => handleOpen("file")} style={{backgroundColor:"#008392"}}>New file</Button>
-    
-   
+            
+          </div>
+          <div style={{ verticalAlign: "center", marginTop: "1em" }}>
+            <Button
+              variant="outlined"
+              onClick={() => handleOpen("folder")}
+              style={{
+                marginRight: "1rem",
+                borderColor: "black",
+                color: "black",
+                padding: "0.5rem",
+              }}
+            >
+              <Typography variant="body2">New folder</Typography>
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => handleOpen("file")}
+              style={{ backgroundColor: "#008392" }}
+            >
+              New file
+            </Button>
           </div>
         </div>
         }
@@ -163,10 +183,25 @@ function MainComponent() {
 
         <SearchBar handleSearch={handleSearch} searchValue={searchValue} />
 
-        <Folder handleFolderClick={handleFolderClick} folder={folder} isActive={isActive} />
+        <Folder
+          handleFolderClick={handleFolderClick}
+          folder={folder}
+          rename={rename}
+          duplicate={duplicate}
+          deleteItem={deleteItem}
+          isActive={isActive}
+        />
 
-          <Files files={files} />
-          <ModalComp open={open} handleClose={handleClose} type={type} handleChange ={handleChange} value ={value} addObj={addObj} isActive={isActive}/>
+        <Files files={files} />
+        <ModalComp
+          open={open}
+          handleClose={handleClose}
+          type={type}
+          handleChange={handleChange}
+          value={value}
+          addObj={addObj}
+          isActive={isActive}
+        />
       </Container>
     </div>
   );
