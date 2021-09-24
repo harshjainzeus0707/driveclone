@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardMedia,
@@ -11,9 +11,11 @@ import {
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import RenameModal from "./RenameModal";
 
-function Folder({ folder, handleFolderClick }) {
+function Folder({ folder, handleFolderClick, duplicate, deleteItem, rename }) {
   // for delete crete delete rename drop doen
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -22,6 +24,15 @@ function Folder({ folder, handleFolderClick }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const [mopen, setMopen] = useState(false);
+  const [name, setName] = useState("");
+  const [currentItem, setCurrentItem] = useState({});
+
+  const openRanameModal = (item) => {
+    setCurrentItem(item);
+    setMopen(true);
+  };
+
   return (
     <div style={{ marginTop: "2rem" }}>
       <Typography variant="body1" style={{ fontWeight: "bold" }}>
@@ -93,7 +104,7 @@ function Folder({ folder, handleFolderClick }) {
                     transformOrigin={{ horizontal: "right", vertical: "top" }}
                     anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                   >
-                    <MenuItem>
+                    <MenuItem onClick={() => openRanameModal(item)}>
                       <ListItemIcon>
                         <img
                           src="assets/DotsVerticalO.svg"
@@ -102,7 +113,12 @@ function Folder({ folder, handleFolderClick }) {
                       </ListItemIcon>
                       Rename Folder
                     </MenuItem>
-                    <MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        console.log("called..");
+                        duplicate(item);
+                      }}
+                    >
                       <ListItemIcon>
                         <img
                           src="assets/DotsVerticalO.svg"
@@ -112,7 +128,10 @@ function Folder({ folder, handleFolderClick }) {
                       Duplicate Folder
                     </MenuItem>
 
-                    <MenuItem style={{ color: "red" }}>
+                    <MenuItem
+                      style={{ color: "red" }}
+                      onClick={() => deleteItem(item.ID)}
+                    >
                       <ListItemIcon>
                         <img
                           src="assets/DotsVerticalO.svg"
@@ -128,6 +147,16 @@ function Folder({ folder, handleFolderClick }) {
           </Grid>
         ))}
       </Grid>
+      {mopen && (
+        <RenameModal
+          open={mopen}
+          handleClose={setMopen}
+          type="folder"
+          handleChange={(e) => setName(e.target.value)}
+          value={name}
+          addObj={() => rename(currentItem, name)}
+        />
+      )}
     </div>
   );
 }

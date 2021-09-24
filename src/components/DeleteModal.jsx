@@ -22,9 +22,8 @@ const style = {
   p: 4,
 };
 
-function ModalComp({ open, handleClose, type, value, handleChange, addObj }) {
+function RenameModal({ open, handleClose, type, value, handleChange, addObj }) {
   let label;
-  console.log("hi...");
   if (type == "folder") {
     label = "Enter folder name";
   } else {
@@ -52,7 +51,7 @@ function ModalComp({ open, handleClose, type, value, handleChange, addObj }) {
                 component="h2"
                 style={{ flexGrow: "1", fontWeight: "bold" }}
               >
-                Create a new {type}
+                Rename {type}
               </Typography>
               <IconButton>
                 <img src="assets/CancelOutlined.svg" onClick={handleClose} />
@@ -85,7 +84,7 @@ function ModalComp({ open, handleClose, type, value, handleChange, addObj }) {
             >
               <Button
                 variant="outlined"
-                onClick={() => handleClose()}
+                onClick={() => handleClose(false)}
                 style={{
                   marginRight: "1rem",
                   borderColor: "black",
@@ -97,10 +96,13 @@ function ModalComp({ open, handleClose, type, value, handleChange, addObj }) {
               </Button>
               <Button
                 variant="contained"
-                onClick={() => addObj(type)}
+                onClick={() => {
+                  addObj(type);
+                  handleClose(false);
+                }}
                 style={{ backgroundColor: "#008392" }}
               >
-                Create {type}
+                Rename {type}
               </Button>
             </div>
           </Box>
@@ -110,4 +112,4 @@ function ModalComp({ open, handleClose, type, value, handleChange, addObj }) {
   );
 }
 
-export default ModalComp;
+export default RenameModal;
