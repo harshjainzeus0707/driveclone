@@ -54,6 +54,7 @@ function SearchBar({ searchValue, handleSearch }) {
           inputProps={{ "aria-label": "search" }}
           value={searchValue}
           onChange={(e) => handleSearch(e.target.value)}
+          style={{width:"100%"}}
         />
       </Search>
     </div>

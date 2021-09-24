@@ -1,10 +1,9 @@
-import { AppBar, Container, Toolbar, IconButton, Typography, Box } from '@mui/material';
+import { AppBar, Container, Toolbar, IconButton, Typography, Box} from '@mui/material';
 import React from 'react';
-
 
 function NavBar({breadCrums,handleBack,handleBcClick}) {
     return (
-        <Box sx={{ flexGrow: 1 }}>
+       ( <Box sx={{ flexGrow: 1}}>
        <AppBar color="inherit" position="static">
            <Toolbar >
                 <span style={{marginRight: "1em"}} onClick={() => handleBack()}>
@@ -33,7 +32,7 @@ function NavBar({breadCrums,handleBack,handleBcClick}) {
                 </Typography>
            </Toolbar>
        </AppBar>
-    </Box>
+    </Box>)
 
     );
     

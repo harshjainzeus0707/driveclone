@@ -1,4 +1,4 @@
-import { Button, Container, Typography } from '@mui/material';
+import { Button, Container, Typography, useMediaQuery } from '@mui/material';
 import React,{useEffect,useState} from 'react';
 import {initalItem} from "../Data/data";
 import Files from './Files';
@@ -52,15 +52,19 @@ function MainComponent() {
     setCurrent(item);
   };
   const handleBack = () => {
+    if(bc.length==1) return; 
     bc.pop();
+    console.log(bc);
     setBc([...bc]);
-    setCurrent(bc.at(-1));
+    setCurrent(bc[bc.length-1]);
   };
 
   const handleBcClick = (item) => {
-    while (bc.at(-1).ID !== item.ID) bc.pop();
+    debugger;
+    while (bc.length>1 && bc[bc.length-1].ID !== item.ID) bc.pop();
     setBc([...bc]);
-    setCurrent(bc.at(-1));
+    console.log(bc);
+    setCurrent(bc[bc.length-1]);
   };
   const handleSearch = (text) => {
     setSearchValue(text.toLowerCase());
@@ -121,14 +125,15 @@ function MainComponent() {
     setOpen(true);
   }
   const handleClose = () => setOpen(false);
+  const isActive = useMediaQuery("(max-width: 450px)");
 
   return (
-    <div style={{background:"#f0f0f0",paddingBottom:"3rem"}}>
+    <div style={{background:"#f0f0f0",paddingBottom:"3rem",height:"100%"}}>
       
-      <NavBar breadCrums={bc} handleBack={handleBack} handleBcClick={handleBcClick}/>
+      {!isActive && <NavBar breadCrums={bc} handleBack={handleBack} handleBcClick={handleBcClick} />}
       <Container style={{marginBottom:"1rem"}}>
 
-          <div style={{display:"flex",justifyContent:"space-between",marginTop:"2rem", marginBottom:"2rem"}}>
+         {!isActive && <div style={{display:"flex",justifyContent:"space-between",marginTop:"2rem", marginBottom:"2rem"}}>
 
             <div style={{flexGrow:"11"}}>
               <Typography variant="h5" style={{fontWeight:"bold"}} > {bc[bc.length-1].name} </Typography>
@@ -141,13 +146,27 @@ function MainComponent() {
    
           </div>
         </div>
+        }
+        {
+          isActive && <div style={{display:"flex", justifyContent:"space-between", padding:"0.7rem"}}> 
+             
+             <span style={{marginRight: "1em"}} onClick={() => handleBack()}>
+                    <img src="assets/Back.svg" loading="lazy"/>
+                </span>
+
+              <Typography variant="h6" style={{fontWeight:"bold"}} > {bc[bc.length-1].name} </Typography>
+              <Button variant="contained" onClick={() => handleOpen("file")} style={{backgroundColor:"#008392"}}> <img src="assets/AddO.svg" /></Button>
+            
+            
+             </div>
+        }
 
         <SearchBar handleSearch={handleSearch} searchValue={searchValue} />
 
-        <Folder handleFolderClick={handleFolderClick} folder={folder} />
+        <Folder handleFolderClick={handleFolderClick} folder={folder} isActive={isActive} />
 
           <Files files={files} />
-          <ModalComp open={open} handleClose={handleClose} type={type} handleChange ={handleChange} value ={value} addObj={addObj}/>
+          <ModalComp open={open} handleClose={handleClose} type={type} handleChange ={handleChange} value ={value} addObj={addObj} isActive={isActive}/>
       </Container>
     </div>
   );

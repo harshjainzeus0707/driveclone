@@ -12,7 +12,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 
-function Folder({ folder, handleFolderClick }) {
+function Folder({ folder, handleFolderClick , isActive}) {
   // for delete crete delete rename drop doen
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -28,10 +28,10 @@ function Folder({ folder, handleFolderClick }) {
         {" "}
         {folder.length} folders{" "}
       </Typography>
-      <Grid container spacing={3} style={{ marginTop: "0.5rem" }}>
-        {folder.map((item, index) => (
-          <Grid item key={index} md={6} lg={3}>
-            <Card sx={{ maxWidth: 250 }} elevation={1}>
+      {!isActive && <Grid container spacing={3} style={{ marginTop: "0.5rem" }}>
+        { folder.map((item, index) => (
+          <Grid item key={index} sm={12} md={6} lg={3}>
+            {<Card sx={{ maxWidth: 250 }} elevation={1}>
               <Box
                 style={{
                   padding: "5rem",
@@ -124,10 +124,102 @@ function Folder({ folder, handleFolderClick }) {
                   </Menu>
                 </div>
               </CardContent>
-            </Card>
+            </Card>}
           </Grid>
         ))}
-      </Grid>
+
+
+
+      </Grid>}
+
+      {isActive && <div>
+         {
+           folder.map((item,index) => (
+             <>
+             <div style={{display:"flex" ,justifyContent:"space-between", alignItems:"center",paddingBottom:"0.5rem",paddingTop:"0.5rem"}}>
+               <div style={{display:"flex", alignItems:"center"}}>
+                  <img src="/assets/foldercopy.png" style={{width:"3rem"}}/>
+                  <span style={{ marginLeft: "1rem"}}>{item.name}</span>
+                  </div>
+               <div> <IconButton aria-label="settings" onClick={handleClick}>
+                    <img src="assets/DotsVerticalO.svg" />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    PaperProps={{
+                      elevation: 0,
+                      sx: {
+                        overflow: "visible",
+                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                        mt: 1.5,
+                        "& .MuiAvatar-root": {
+                          width: 32,
+                          height: 32,
+                          ml: -0.5,
+                          mr: 1,
+                        },
+                        "&:before": {
+                          content: '""',
+                          display: "block",
+                          position: "absolute",
+                          top: 0,
+                          right: 14,
+                          width: 10,
+                          height: 10,
+                          bgcolor: "background.paper",
+                          transform: "translateY(-50%) rotate(45deg)",
+                          zIndex: 0,
+                        },
+                      },
+                    }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  >
+                    <MenuItem>
+                      <ListItemIcon>
+                        <img
+                          src="assets/DotsVerticalO.svg"
+                          alt="rename folder"
+                        />
+                      </ListItemIcon>
+                      Rename Folder
+                    </MenuItem>
+                    <MenuItem>
+                      <ListItemIcon>
+                        <img
+                          src="assets/DotsVerticalO.svg"
+                          alt="Duplicate Folder"
+                        />
+                      </ListItemIcon>
+                      Duplicate Folder
+                    </MenuItem>
+
+                    <MenuItem style={{ color: "red" }}>
+                      <ListItemIcon>
+                        <img
+                          src="assets/DotsVerticalO.svg"
+                          alt="Delete Folder"
+                        />
+                      </ListItemIcon>
+                      Delete Folder
+                    </MenuItem>
+                  </Menu>
+                
+                  </div>
+
+               </div>
+               <div style={{border:"1px solid lightgrey"}}> </div>
+              </>
+              
+           ))
+         }
+       
+       </div>
+
+      }
     </div>
   );
 }

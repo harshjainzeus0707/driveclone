@@ -1,6 +1,5 @@
 import React from 'react';
-import {Backdrop,Box,Modal,Fade,Button,Typography, IconButton, TextField} from '@mui/material';
-
+import {Backdrop,Box,Modal,Fade,Button,Typography, IconButton, TextField,useMediaQuery} from '@mui/material';
 
 const style = {
     position: 'absolute',
@@ -14,7 +13,8 @@ const style = {
     p: 4,
   };
 
-function ModalComp({open,handleClose,type,value,handleChange,task,addObj}) {
+function ModalComp({open,handleClose,type,value,handleChange,task,addObj,isActive}) {
+   if(isActive) style.width = 200;
     let label;
     if(type=="folder"){
       label = "Enter folder name";
