@@ -1,11 +1,11 @@
-import { Button, Container, Typography } from '@mui/material';
-import { height } from '@mui/system';
-import React,{useEffect,useState} from 'react';
-import {initalItem} from "../Data/data";
-import Files from './Files';
-import Folder from './Folder';
-import NavBar from './NavBar';
-import Search from './Search';
+import { Button, Container, Typography } from "@mui/material";
+import { height } from "@mui/system";
+import React, { useEffect, useState } from "react";
+import { initalItem } from "../Data/data";
+import Files from "./Files";
+import Folder from "./Folder";
+import NavBar from "./NavBar";
+import SearchBar from "./Search";
 
 function MainComponent() {
   const [Item, setItem] = useState(initalItem);
@@ -21,8 +21,8 @@ function MainComponent() {
       type: 0,
       name: "My Documents",
       ID: 0,
-      parent: -1
-    }
+      parent: -1,
+    },
   ]);
 
   const files = Item.filter((item) => {
@@ -75,11 +75,11 @@ function MainComponent() {
         name: searchValue,
         type: 0,
         parent: current.ID,
-        ID: Item.length + 1
-      }
+        ID: Item.length + 1,
+      },
     ]);
     setSearchValue("");
-  }
+  };
   const addText = () => {
     // change searchValue Variable
     setItem([
@@ -88,8 +88,8 @@ function MainComponent() {
         name: searchValue,
         type: getType(searchValue),
         parent: current.ID,
-        ID: Item.length + 1
-      }
+        ID: Item.length + 1,
+      },
     ]);
     setSearchValue("");
   };
@@ -104,8 +104,8 @@ function MainComponent() {
         type: item.type,
         parent: item.parent,
         name: `${item.name}(1)`,
-        ID: Item.length + 1
-      }
+        ID: Item.length + 1,
+      },
     ]);
   };
   const rename = (value, text) => {
@@ -116,30 +116,61 @@ function MainComponent() {
   };
 
   return (
-    <div style={{background:"#f0f0f0",paddingBottom:"3rem"}}>
-      
-      <NavBar breadCrums={bc} handleBack={handleBack} handleBcClick={handleBcClick}/>
-      <Container style={{marginBottom:"1rem"}}>
-
-          <div style={{display:"flex",justifyContent:"space-between",marginTop:"2rem", marginBottom:"2rem"}}>
-
-            <div style={{flexGrow:"11"}}>
-              <Typography variant="h5" style={{fontWeight:"bold"}} > {bc[bc.length-1].name} </Typography>
-              <div style={{marginTop:"0.5rem"}}><Typography variant="body1" color="textSecondary"> {folder.length} folder, {files.length} files</Typography></div>
+    <div style={{ background: "#f0f0f0", paddingBottom: "3rem" }}>
+      <NavBar
+        breadCrums={bc}
+        handleBack={handleBack}
+        handleBcClick={handleBcClick}
+      />
+      <Container style={{ marginBottom: "1rem" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "2rem",
+            marginBottom: "2rem",
+          }}
+        >
+          <div style={{ flexGrow: "11" }}>
+            <Typography variant="h5" style={{ fontWeight: "bold" }}>
+              {" "}
+              {bc[bc.length - 1].name}{" "}
+            </Typography>
+            <div style={{ marginTop: "0.5rem" }}>
+              <Typography variant="body1" color="textSecondary">
+                {" "}
+                {folder.length} folder, {files.length} files
+              </Typography>
             </div>
-            <div style={{verticalAlign:"center",marginTop:"1em"}}>
-              <Button variant="outlined"  onClick={() => add()} style={{marginRight:"1rem",borderColor:"black",color:"black",padding:"0.5rem" }}><Typography variant="body2">New folder</Typography></Button>
-              <Button variant="contained" onClick={() => addText()} style={{backgroundColor:"#008392"}}>New file</Button>
-            </div>
-
           </div>
+          <div style={{ verticalAlign: "center", marginTop: "1em" }}>
+            <Button
+              variant="outlined"
+              onClick={() => add()}
+              style={{
+                marginRight: "1rem",
+                borderColor: "black",
+                color: "black",
+                padding: "0.5rem",
+              }}
+            >
+              <Typography variant="body2">New folder</Typography>
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => addText()}
+              style={{ backgroundColor: "#008392" }}
+            >
+              New file
+            </Button>
+          </div>
+        </div>
 
+        <SearchBar handleSearch={handleSearch} searchValue={searchValue} />
 
-          <Search handleSearch={handleSearch} searchValue={searchValue}/>
+        <Folder handleFolderClick={handleFolderClick} folder={folder} />
 
-          <Folder handleFolderClick={handleFolderClick} folder={folder}/>
-
-          <Files files={files} />
+        <Files files={files} />
       </Container>
     </div>
   );
